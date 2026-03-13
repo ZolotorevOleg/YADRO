@@ -101,11 +101,6 @@ def currency():
     except Exception:
         return jsonify({"error": "Failed to parse currency rates"}), 500
 
-    if date_str and actual_date:
-        requested_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%d.%m.%Y")
-        if actual_date != requested_date:
-            return jsonify({"error": "No rates available for this date"}), 404
-
     if currency_code:
         currency_code = currency_code.upper()
 
