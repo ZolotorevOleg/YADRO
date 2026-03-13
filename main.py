@@ -52,7 +52,7 @@ def parse_cbr_xml(xml_text: str) -> dict:
         value = float(value_text.replace(",", "."))
         nominal = int(nominal_text)
 
-        result[char_code] = round(value / nominal, 4)
+        result[char_code] = round(value, 4)
 
     return result
 
