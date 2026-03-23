@@ -17,7 +17,26 @@ HTTP-сервис для получения курсов валют через A
 
 ## Запуск
 
-```bash
+```
 pip install -r requirements.txt
 python main.py
 ```
+
+## Docker Hub
+
+Образ доступен:
+
+`z0leg/currency-service:latest`
+
+## Безопасность
+- запуск от non-root пользователя
+- read-only файловая система (hardened)
+- cap_drop: ALL
+- no-new-privileges
+- tmpfs для /tmp
+- лимиты ресурсов
+- healthcheck
+
+## Сканирование
+- Trivy → trivy-report.json
+- SBOM  → sbom.json
