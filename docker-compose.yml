@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: currency-service:latest
+    image: currency-service:1.0.0
     container_name: currency-service
     env_file:
       - .env
