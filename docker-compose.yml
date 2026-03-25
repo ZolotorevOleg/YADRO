@@ -1,0 +1,23 @@
+services:
+  currency-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: currency-service:1.0.0
+    container_name: currency-service
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/info')"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
