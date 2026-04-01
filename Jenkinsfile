@@ -19,7 +19,7 @@ pipeline {
     }
 
     options {
-        gitLabConnection('education-gityadro.com')
+        gitLabConnection('education-git.yadro.com')
     }
 
 
