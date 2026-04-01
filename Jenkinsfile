@@ -18,6 +18,11 @@ pipeline {
         TRIVY_IMAGE = 'aquasec/trivy:0.69.3@sha256:7228e304ae0f610a1fad937baa463598cadac0c2ac4027cc68f3a8b997115689'
     }
 
+    options {
+        gitLabConnection('education-gityadro.com')
+    }
+
+
     stages {
         stage('Quality') {
             parallel {
@@ -47,6 +52,7 @@ pipeline {
                             archiveArtifacts artifacts: 'reports/bandit.json,reports/bandit.txt', allowEmptyArchive: true
                         }
                     }
+                    sh 'docker-compose build'
                 }
             }
         }
