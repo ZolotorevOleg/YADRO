@@ -22,6 +22,9 @@ pipeline {
         gitLabConnection('education-git.yadro.com')
     }
 
+    environment {
+        HADOLINT_IMAGE = 'hadolint/hadolint:v2.14.0-alpine@sha256:7aba693c1442eb31c0b015c129697cb3b6cb7da589d85c7562f9deb435a6657c'
+    }
 
     stages {
         stage('Quality') {
