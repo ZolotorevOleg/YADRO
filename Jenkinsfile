@@ -55,7 +55,6 @@ pipeline {
                             archiveArtifacts artifacts: 'reports/bandit.json,reports/bandit.txt', allowEmptyArchive: true
                         }
                     }
-                    sh 'docker-compose build'
                 }
             }
         }
