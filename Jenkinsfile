@@ -55,6 +55,7 @@ pipeline {
                             archiveArtifacts artifacts: 'reports/bandit.json,reports/bandit.txt', allowEmptyArchive: true
                         }
                     }
+                sh 'docker-compose build'
                 }
             }
         }
@@ -216,7 +217,7 @@ pipeline {
         stage('Security') {
             when {
                 expression {
-                    env.GIT_BRANCH == 'origin/o.zolotorev1/currency-service'
+                    env.GIT_BRANCH == 'origin/main'
                 }
             }
             parallel {
