@@ -205,7 +205,7 @@ pipeline {
 
         stage('Security') {
             when {
-                branch 'main'
+                branch 'o.zolotorev1/currency-service'
             }
             parallel {
                 stage('Pre-commit secrets') {
