@@ -205,7 +205,9 @@ pipeline {
 
         stage('Security') {
             when {
-                branch 'o.zolotorev1/currency-service'
+                expression {
+                    env.GIT_BRANCH == 'origin/o.zolotorev1/currency-service'
+                }
             }
             parallel {
                 stage('Pre-commit secrets') {
