@@ -49,7 +49,8 @@ def currency():
         currency_code = currency_code.upper()
 
         if currency_code not in rates:
-            return jsonify({"error": f"Currency '{currency_code}' not found"}), 404
+            return jsonify({"error": f"Currency '{currency_code}' "
+                                     "not found"}), 404
 
         return jsonify({
             "service": SERVICE_NAME,
