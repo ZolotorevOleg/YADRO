@@ -27,6 +27,7 @@ pipeline {
     }
 
     stages {
+        stages {
         stage('Quality') {
             parallel {
                 stage('Lint') {
@@ -58,6 +59,8 @@ pipeline {
                 }
             }
         }
+    }
+}
 
 
         stage('Test') {
