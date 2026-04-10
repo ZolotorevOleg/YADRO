@@ -59,8 +59,7 @@ pipeline {
                 }
             }
         }
-    }
-}
+
 
 
         stage('Test') {
