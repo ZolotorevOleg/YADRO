@@ -136,6 +136,7 @@ pipeline {
         }
 
 
+<<<<<<< HEAD
         stage('Deploy') {
             parallel {
                 stage('Deploy staging') {
@@ -166,6 +167,15 @@ pipeline {
                             ]
                     }
                 }
+=======
+        stage('Smoke test') {
+            agent { label 'staging' }
+            when {
+                expression { env.GIT_BRANCH == 'origin/master' }
+            }
+            steps {
+                sh 'curl -f http://localhost:8000/info'
+>>>>>>> dec4b53 (ci: changу all branch expression)
             }
         }
 
