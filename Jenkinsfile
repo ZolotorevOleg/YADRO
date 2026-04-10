@@ -55,7 +55,6 @@ pipeline {
                             archiveArtifacts artifacts: 'reports/bandit.json,reports/bandit.txt', allowEmptyArchive: true
                         }
                     }
-                sh 'docker-compose build'
                 }
             }
         }
@@ -205,9 +204,7 @@ pipeline {
 
         stage('Security') {
             when {
-                expression {
-                    env.GIT_BRANCH == 'origin/main'
-                }
+                branch "main"
             }
             parallel {
                 stage('Pre-commit secrets') {
