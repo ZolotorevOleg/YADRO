@@ -5,8 +5,13 @@ pytest
 flake8
 pre-commit
 <<<<<<< HEAD
+<<<<<<< HEAD
 detect-secrets
 bandit
 =======
 detect-secrets
 >>>>>>> 48195c4 (ci: test security part)
+=======
+detect-secrets
+bandit
+>>>>>>> 410e155 (implement all security check)
