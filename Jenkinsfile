@@ -16,16 +16,25 @@ pipeline {
         ZAP_IMAGE = 'zaproxy/zap-stable:2.17.0@sha256:47b883dca0d77aeef1dbb9b8ce1f4baddde348ad5852666e553456a9ad936111'
         K6_IMAGE = 'grafana/k6:master@sha256:07118fc44590c989d2c7bf213fb6a03a20356457b723f55f2051895e5bb363ae'
         TRIVY_IMAGE = 'aquasec/trivy:0.69.3@sha256:7228e304ae0f610a1fad937baa463598cadac0c2ac4027cc68f3a8b997115689'
+        VENV_PATH = 'venv/bin/activate'
     }
 
     stages {
+        stage('Setup Python') {
+            agent { label 'staging' }
+            steps {
+                runSetupPython(env.VENV_PATH)
+            }
+        }
+
+
         stage('Quality') {
             parallel {
                 stage('Lint') {
                     agent { label 'staging' }
                     steps {
                         script {
-                            runLint(env.HADOLINT_IMAGE)
+                            runLint(env.HADOLINT_IMAGE, env.VENV_PATH)
                         }
                     }
                     post {
@@ -39,7 +48,7 @@ pipeline {
                     agent { label 'staging' }
                     steps {
                         script {
-                            runSast()
+                            runSast(env.VENV_PATH)
                         }
                     }
                     post {
@@ -54,18 +63,10 @@ pipeline {
 
         stage('Test') {
             agent { label 'staging' }
-            when {
-                anyOf {
-                    branch 'o.zolotorev1/currency-service'
-                    branch 'main'
-                    changeRequest()
-                    tag pattern: "v.*", comparator: "REGEXP"
-                }
-            }
             steps {
                 gitlabCommitStatus('test') {
                     script {
-                        runTest()
+                        runTest(env.VENV_PATH)
                     }
                 }
             }
@@ -98,7 +99,7 @@ pipeline {
 
 
         stage('Push to DockerHub') {
-            agent { label 'production' }
+            agent { label 'staging' }
             when {
                 anyOf {
                     branch 'main'
@@ -110,85 +111,61 @@ pipeline {
             }
             steps {
                 script {
-                    pushImage(env.IMAGE_NAME, env.TAG_NAME ?: env.BUILD_NUMBER)
+                    def imageTag = env.TAG_NAME ?: 'latest'
+                    pushImage(env.IMAGE_NAME, imageTag)
                 }
             }
         }
 
 
         stage('Deploy') {
-            parallel {
-                stage('Deploy staging') {
-                agent { label 'staging' }
-                    when {
-                        branch 'main'
-                    }
-                    steps {
-                        build job: 'deploy-job',
-                            parameters: [
-                                string(name: 'IMAGE_TAG', value: env.BUILD_NUMBER),
-                                string(name: 'ENVIRONMENT', value: 'staging')
-                            ]
-                    }
-                }
-
-
-                stage('Deploy production') {
-                agent { label 'production' }
-                    when {
-                        tag pattern: "v.*", comparator: "REGEXP"
-                    }
-                    steps {
-                        build job: 'deploy-job',
-                            parameters: [
-                                string(name: 'IMAGE_TAG', value: env.TAG_NAME),
-                                string(name: 'ENVIRONMENT', value: 'production')
-                            ]
-                    }
-                }
-            }
-        }
-
-
-        stage('Smoke Test'){
-            parallel{
-                stage('Smoke test staging') {
-                    agent { label 'staging' }
-                    when {
-                        branch 'main'
-                    }
-                    steps {
-                        sh 'curl -f http://localhost:8000/info'
-                    }
-                }
-
-
-                stage('Smoke test production') {
-                    agent { label 'production' }
-                    when {
-                        tag pattern: "v.*", comparator: "REGEXP"
-                    }
-                    steps {
-                        sh 'curl -f http://localhost:8000/info'
-                    }
-                }
-            }
-        }
-
-
-        stage('Generate changelog') {
-            agent { label 'production' }
             when {
-                tag pattern: 'v.*', comparator: 'REGEXP'
+                anyOf {
+                    branch 'main'
+                    tag pattern: "v.*", comparator: "REGEXP"
+                }
             }
             steps {
                 script {
-                    generateChangelog()
+                    def imageTag
+                    def targetEnv
+
+                    if (env.TAG_NAME) {
+                        imageTag = env.TAG_NAME
+                        targetEnv = 'production'
+                    } else {
+                        imageTag = 'latest'
+                        targetEnv = 'staging'
+                    }
+
+                    build job: 'deploy-job',
+                        parameters: [
+                            string(name: 'IMAGE_TAG', value: imageTag),
+                            string(name: 'ENVIRONMENT', value: targetEnv)
+                        ]
                 }
             }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'reports/changelog.md', allowEmptyArchive: true
+        }
+
+
+        stage('Smoke Test') {
+            when {
+                anyOf {
+                    branch 'main'
+                    tag pattern: "v.*", comparator: "REGEXP"
+                }
+            }
+            steps {
+                script {
+                    if (env.TAG_NAME) {
+                        node('production') {
+                            sh 'curl -svf http://localhost:8000/info'
+                        }
+                    } else {
+                        node('staging') {
+                            sh 'curl -svf http://localhost:8000/info'
+                        }
+                    }
                 }
             }
         }
@@ -203,7 +180,7 @@ pipeline {
                     agent { label 'staging' }
                     steps {
                         script {
-                            runPrecommit()
+                            runPrecommit(env.VENV_PATH)
                         }
                     }
                     post {
