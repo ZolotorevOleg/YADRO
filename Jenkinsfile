@@ -64,10 +64,8 @@ pipeline {
         stage('Test') {
             agent { label 'staging' }
             steps {
-                gitlabCommitStatus('test') {
-                    script {
-                        runTest(env.VENV_PATH)
-                    }
+                script {
+                    runTest(env.VENV_PATH)
                 }
             }
             post {
@@ -88,10 +86,9 @@ pipeline {
                 }
             }
             steps {
-                gitlabCommitStatus('build') {
-                    script {
-                        buildImage()
-                    }
+                script {
+                    def imageTag = env.TAG_NAME ?: 'latest'
+                    buildImage(imageTag)
                 }
             }
         }
