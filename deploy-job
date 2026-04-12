@@ -16,10 +16,10 @@ pipeline {
             steps {
                 sh """
                 echo "Deploying ${params.IMAGE_TAG} to ${params.ENVIRONMENT}"
-                docker pull ${IMAGE_NAME}:${IMAGE_TAG}
-                docker-compose down || true
-                docker rm -f currency-service || true
-                docker run -d --name currency-service -p 8000:8000 ${IMAGE_NAME}:${IMAGE_TAG}
+
+                export IMAGE_TAG=${params.IMAGE_TAG}
+                docker compose pull
+                docker compose up -d
                 """
             }
         }
