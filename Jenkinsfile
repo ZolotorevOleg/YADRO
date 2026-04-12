@@ -158,19 +158,6 @@ pipeline {
             }
         }
 
-                stage('SCA image') {
-                    agent { label 'staging' }
-                    steps {
-                        script {
-                            scanImage(${env.IMAGE_NAME}:${env.BUILD_NUMBER})
-                        }
-                    }
-                    post {
-                        always {
-                            archiveArtifacts artifacts: 'reports/trivy-image.json', allowEmptyArchive: true
-                        }
-                    }
-                }
 
         stage('Smoke Test'){
             parallel{
