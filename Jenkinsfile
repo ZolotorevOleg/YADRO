@@ -18,14 +18,6 @@ pipeline {
         TRIVY_IMAGE = 'aquasec/trivy:0.69.3@sha256:7228e304ae0f610a1fad937baa463598cadac0c2ac4027cc68f3a8b997115689'
     }
 
-    options {
-        gitLabConnection('education-git.yadro.com')
-    }
-
-    environment {
-        HADOLINT_IMAGE = 'hadolint/hadolint:v2.14.0-alpine@sha256:7aba693c1442eb31c0b015c129697cb3b6cb7da589d85c7562f9deb435a6657c'
-    }
-
     stages {
         stage('Quality') {
             parallel {
@@ -58,7 +50,6 @@ pipeline {
                 }
             }
         }
-
 
 
         stage('Test') {
@@ -205,7 +196,7 @@ pipeline {
 
         stage('Security') {
             when {
-                branch "main"
+                branch 'main'
             }
             parallel {
                 stage('Pre-commit secrets') {
