@@ -16,7 +16,7 @@ pipeline {
         ZAP_IMAGE = 'zaproxy/zap-stable:2.17.0@sha256:47b883dca0d77aeef1dbb9b8ce1f4baddde348ad5852666e553456a9ad936111'
         K6_IMAGE = 'grafana/k6:master@sha256:07118fc44590c989d2c7bf213fb6a03a20356457b723f55f2051895e5bb363ae'
         TRIVY_IMAGE = 'aquasec/trivy:0.69.3@sha256:7228e304ae0f610a1fad937baa463598cadac0c2ac4027cc68f3a8b997115689'
-        VENV_PATH = 'venv/bin/activate'
+        VENV_PATH = "/home/jenkins/venv"
     }
 
     stages {

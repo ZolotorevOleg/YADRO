@@ -40,28 +40,29 @@ HTTP-сервис для получения курсов валют через A
 ### В проекте реализован CI/CD pipeline на базе Jenkins Multibranch Pipeline
 
 # Pipeline стадии
+- # Setup Python
+    - установка библиотек
+    - настройка окружения
 - # Quality
     - # Lint
         - проверка кода через flake8 `(отчет сохраняется артефактом)`
         - проверка Dockerfile через hadolint `(отчет сохраняется артефактом)`
-    - SAST (Bandit)
+    - # SAST (Bandit)
         - проверка кода приложения
         - `(отчет сохраняется артефактом)`
 - # Test
     - запуск unit-тестов `(отчет сохраняется артефактом)`
 - # Build
     - сборка Docker-образа
-- # Publish to dockerhub
-    - z0leg/currency-service
+- # Publish to DockerHub
+    - [z0leg/currency-service](https://hub.docker.com/r/z0leg/currency-service)
 - # Deploy (deploy-job)
     - в staging при commit в main ветку
     - в production при добавлении тега на commit
+    - вызывает deploy-job с параметрами тега и окружения
 - # Smoke Test (curl)
     - в том окружении, где осуществился деплой контейнера
     - проверка доступности приложения по адресу http://localhost:8000/info
-- # Generate changelog
-    - только после деплоя в production
-    - собираются последние 20 строчек из логов в файл и сохраняются артефактом
 - # Security
     - ## Pre-commit
         - проверка на EOF, trailing-whitespace, проверка yaml файлов
@@ -80,6 +81,9 @@ HTTP-сервис для получения курсов валют через A
         - поиск уязвимостей в работающем веб приложении
         - запускается через Docker-контейнер
         - `отчет сохраняется артефактом`
+- # Generate changelog
+    - только после деплоя в production
+    - собираются последние 20 строчек из логов в файл и сохраняются артефактом
 
 # Триггеры pipeline
 - ## feature-ветка
