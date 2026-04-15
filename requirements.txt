@@ -3,3 +3,6 @@ requests
 python-dotenv
 pytest
 flake8
+pre-commit
+detect-secrets
+bandit

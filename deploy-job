@@ -1,0 +1,27 @@
+pipeline {
+    agent none
+
+    parameters {
+        string(name: 'IMAGE_TAG', description: 'Image tag')
+        choice(name: 'ENVIRONMENT', choices: ['staging', 'production'], description: 'Target environment')
+    }
+
+    environment {
+        IMAGE_NAME = 'z0leg/currency-service'
+    }
+
+    stages {
+        stage('Deploy') {
+            agent { label "${params.ENVIRONMENT}" }
+            steps {
+                sh """
+                echo "Deploying ${params.IMAGE_TAG} to ${params.ENVIRONMENT}"
+
+                export IMAGE_TAG=${params.IMAGE_TAG}
+                docker-compose pull
+                docker-compose up -d
+                """
+            }
+        }
+    }
+}
