@@ -17,3 +17,6 @@ sbom.json
 .dockerignore
 .gitlab-ci.yml
 *.md
+Jenkinsfile
+.pre-commit-config.yaml
+deploy-job

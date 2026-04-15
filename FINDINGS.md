@@ -29,4 +29,3 @@ The hardened Docker Compose configuration includes:
 - `cap_drop: ALL`
 - process and resource limits
 - isolated bridge network
-
