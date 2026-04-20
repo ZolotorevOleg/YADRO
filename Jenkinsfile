@@ -1,9 +1,6 @@
 @Library('currency-shared-lib') _
 
-@Library('currency-shared-lib') _
-
 pipeline {
-    agent none
     agent none
 
     options {
@@ -106,13 +103,9 @@ pipeline {
         }
 
 
-
         stage('Push to DockerHub') {
             agent { label 'staging' }
             when {
-                anyOf {
-                    branch 'main'
-                    tag pattern: "v.*", comparator: "REGEXP"
                 anyOf {
                     branch 'main'
                     tag pattern: "v.*", comparator: "REGEXP"
