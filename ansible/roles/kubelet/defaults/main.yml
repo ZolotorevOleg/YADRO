@@ -1,0 +1,5 @@
+---
+kubelet_enable_service: true
+kubelet_start_service: true
+kubelet_install_kubectl: false
+kubelet_hold_packages: true

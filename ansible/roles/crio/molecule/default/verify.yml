@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check CRI-O binary
+      ansible.builtin.command: crio --version
+      changed_when: false
+
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Check CRI-O service is running
+      ansible.builtin.assert:
+        that:
+          - "'crio.service' in ansible_facts.services"
+          - ansible_facts.services['crio.service'].state == 'running'

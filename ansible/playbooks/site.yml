@@ -1,0 +1,16 @@
+---
+- name: Setup control plane
+  hosts: k8s_control_plane
+  become: true
+  roles:
+    - crio
+    - kubelet
+    - kubeadm
+
+- name: Setup workers
+  hosts: k8s_workers
+  become: true
+  roles:
+    - crio
+    - kubelet
+    - kubeadm

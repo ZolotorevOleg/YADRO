@@ -1,0 +1,6 @@
+---
+- name: Setup Kubernetes cluster
+  hosts: k8s_nodes
+  become: true
+  roles:
+    - kubeadm
