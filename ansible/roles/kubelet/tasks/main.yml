@@ -1,0 +1,28 @@
+---
+- name: Install kubelet package
+  ansible.builtin.apt:
+    name: kubelet
+    state: present
+    update_cache: true
+  become: true
+
+- name: Install kubectl package
+  ansible.builtin.apt:
+    name: kubectl
+    state: present
+  when: kubelet_install_kubectl
+  become: true
+
+- name: Hold kubelet package
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: hold
+  when: kubelet_hold_packages
+  become: true
+
+- name: Enable kubelet service
+  ansible.builtin.service:
+    name: kubelet
+    enabled: "{{ kubelet_enable_service }}"
+    state: "{{ 'started' if kubelet_start_service else omit }}"
+  become: true

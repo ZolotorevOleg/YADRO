@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: default
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "/home/master/ansible/roles"
+  inventory:
+    links:
+      hosts: /home/master/ansible/inventory/hosts.ini
+
+verifier:
+  name: ansible
+
+scenario:
+  test_sequence:
+    - syntax
+    - converge
+    - idempotence
+    - verify
