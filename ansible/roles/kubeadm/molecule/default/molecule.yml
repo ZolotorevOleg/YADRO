@@ -11,7 +11,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: "/home/master/ansible/roles"
   inventory:
     links:
-      hosts: /home/master/ansible/inventory/hosts.ini
+      hosts: /home/master/ansible/inventory/test-hosts.ini
 
 verifier:
   name: ansible

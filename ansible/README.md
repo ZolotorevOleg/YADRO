@@ -15,7 +15,7 @@ The cluster consists of:
 
 All roles are idempotent and tested with Molecule.
 
-Proxy credentials are stored securely using Ansible Vault.  
+Proxy credentials are stored securely using Ansible Vault.
 The proxy login and password are not hardcoded in roles and are loaded from encrypted variables.
 
 ---
@@ -33,3 +33,22 @@ ansible/
     ├── crio/
     ├── kubelet/
     └── kubeadm/
+
+## Testing
+
+Molecule tests use a separate test inventory file:
+
+- `inventory/test-hosts.ini`
+
+This file can contain the same hosts as the main inventory, but it is isolated from the production playbook configuration.
+
+To run Molecule tests:
+
+```bash
+cd roles/crio && molecule test
+cd ../kubelet && molecule test
+cd ../kubeadm && molecule test
+```
+
+For local testing, replace host addresses and SSH users in `inventory/test-hosts.ini` with your own test machines.
+If needed, adjust variables in `inventory/group_vars/`.
