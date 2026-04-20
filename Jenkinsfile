@@ -74,7 +74,7 @@ pipeline {
 
 
         stage('Build') {
-            agent { label 'staging' }
+            agent none
             when {
                 anyOf {
                     branch 'main'
@@ -84,8 +84,20 @@ pipeline {
             }
             steps {
                 script {
-                    def imageTag = env.TAG_NAME ?: 'latest'
-                    buildImage(imageTag)
+                    def imageTag
+                    def targetEnv
+
+                    if (env.TAG_NAME) {
+                        imageTag = env.TAG_NAME
+                        targetEnv = 'production'
+                    } else {
+                        imageTag = 'latest'
+                        targetEnv = 'staging'
+                    }
+
+                    node(targetEnv) {
+                        buildImage(imageTag)
+                    }
                 }
             }
         }
