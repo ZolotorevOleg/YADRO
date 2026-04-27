@@ -190,8 +190,4 @@ ansible-playbook playbooks/site.yml --ask-vault-pass
 
 - все ноды находятся в состоянии `Ready`
 - системные pod’ы работают
-<<<<<<< HEAD
-- сеть (Flannel) настроена
-=======
-- сеть (Flannel) настроена
->>>>>>> c203bbb (feat: add Ansible automation for Kubernetes cluster deployment)
+- сеть (Calico) настроена
