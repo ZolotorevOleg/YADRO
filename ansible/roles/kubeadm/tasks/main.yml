@@ -90,7 +90,6 @@
     - /etc/kubernetes/kubelet.conf
     - /etc/kubernetes/bootstrap-kubelet.conf
     - /etc/kubernetes/pki
-    - /var/lib/kubelet
     - /var/lib/etcd
   when:
     - "'k8s_workers' in group_names"
@@ -130,17 +129,17 @@
   changed_when: false
   become: true
 
-- name: Check if flannel daemonset exists
-  ansible.builtin.command: kubectl get daemonset kube-flannel-ds -n kube-flannel
+- name: Check if Calico daemonset exists
+  ansible.builtin.command: kubectl get daemonset calico-node -n kube-system
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
-  register: flannel_check
+  register: calico_check
   failed_when: false
   changed_when: false
   when: "'k8s_control_plane' in group_names"
   become: true
 
-- name: Install CNI plugin (flannel)
+- name: Install CNI plugin
   ansible.builtin.command: >
     kubectl apply -f {{ kubeadm_cni_url }}
   environment:
@@ -148,5 +147,5 @@
   when:
     - "'k8s_control_plane' in group_names"
     - kubeadm_install_cni
-    - flannel_check.rc != 0
+    - calico_check.rc != 0
   become: true
