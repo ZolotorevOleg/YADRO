@@ -1,6 +1,0 @@
----
-- name: Test CRI-O role
-  hosts: k8s_nodes
-  become: true
-  roles:
-    - crio
