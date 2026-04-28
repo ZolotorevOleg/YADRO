@@ -20,3 +20,5 @@ sbom.json
 Jenkinsfile
 .pre-commit-config.yaml
 deploy-job
+ansible
+.pytest_cache

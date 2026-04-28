@@ -190,4 +190,4 @@ ansible-playbook playbooks/site.yml --ask-vault-pass
 
 - все ноды находятся в состоянии `Ready`
 - системные pod’ы работают
-- сеть (Flannel) настроена
+- сеть (Calico) настроена
