@@ -191,3 +191,70 @@ ansible-playbook playbooks/site.yml --ask-vault-pass
 - все ноды находятся в состоянии `Ready`
 - системные pod’ы работают
 - сеть (Calico) настроена
+
+
+## Развёртывание приложения в Kubernetes
+
+Приложение currency-service развернуто в Kubernetes-кластере, состоящем из одной control-plane ноды и двух worker нод.
+
+### Архитектура
+```
+Интернет
+→ Tailscale Funnel (HTTPS)
+→ master (Ingress)
+→ Service
+→ Pods (worker1, worker2)
+```
+### Используемые ресурсы Kubernetes
+- Deployment
+- запуск приложения в `2` репликах
+- контейнер: [z0leg/currency-service:v1](https://hub.docker.com/r/z0leg/currency-service)
+- порт: `8000`
+
+### Дополнительно:
+
+- `readinessProbe` — проверка готовности
+- `livenessProbe` — перезапуск при зависании
+- `resources` — ограничения CPU и памяти
+- `topologySpreadConstraints` — распределение pod’ов по нодам
+
+### Service
+- порт: 80 → 8000
+- балансировка между pod’ами
+
+### Ingress
+- ingressClass: nginx
+- маршрут: /info
+- host: [currency-service.tailaaac65.ts.net](https://currency-service.tailaaac65.ts.net/info)
+- Ingress Controller
+
+Используется NGINX Ingress Controller, развернутый как DaemonSet
+
+### Особенности:
+
+- работает на всех нодах
+- используется hostNetwork
+- принимает трафик на порту 80
+- внешний доступ
+- для публикации сервиса используется Tailscale Funnel.
+
+### Причины выбора:
+
+- не требуется белый IP
+- автоматически настраивается HTTPS
+- не требуется cert-manager
+- простая настройка
+
+### Доступ:
+
+https://currency-service.tailaaac65.ts.net/info
+
+### Отказоустойчивость
+
+Обеспечена за счёт:
+
+- 2 реплик приложения
+- размещения pod’ов на разных нодах
+- автоматического перезапуска pod’ов Kubernetes
+- балансировки через Service
+- Балансировка нагрузки
