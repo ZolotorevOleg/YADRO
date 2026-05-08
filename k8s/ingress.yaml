@@ -17,3 +17,10 @@ spec:
             name: currency-service
             port:
               number: 80
+      - path: /info/currency
+        pathType: Prefix
+        backend:
+          service:
+            name: currency-service
+            port:
+              number: 80
