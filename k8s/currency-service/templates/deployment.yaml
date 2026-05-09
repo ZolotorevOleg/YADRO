@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: currency-service
-  namespace: currency-service
 spec:
   replicas: 2
   strategy:
