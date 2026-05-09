@@ -15,7 +15,7 @@ spec:
 
   source:
     repoURL: https://education-git.yadro.com/education/devops/2026/o.zolotorev/app.git
-    targetRevision: o.zolotorev1/currency-service
+    targetRevision: o.zolotorev/k8s_ci/cd
     path: k8s/currency-service
     helm:
       valueFiles:
