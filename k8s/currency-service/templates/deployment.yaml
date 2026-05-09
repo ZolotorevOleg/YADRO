@@ -24,8 +24,7 @@ spec:
               app: currency-service
       containers:
       - name: currency-service
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: z0leg/currency-service:v1
         ports:
         - containerPort: 8000
 
