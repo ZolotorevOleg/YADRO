@@ -4,7 +4,7 @@ from services.currency_service import get_rates
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, redirect, request
 
 load_dotenv()
 
@@ -16,6 +16,11 @@ AUTHOR = os.getenv("AUTHOR", "o.zolotorev1")
 PORT = int(os.getenv("PORT", "8000"))
 
 SERVICE_NAME = "currency"
+
+
+@app.route("/")
+def root():
+    return redirect("/info")
 
 
 @app.route("/info", methods=["GET"], strict_slashes=False)
