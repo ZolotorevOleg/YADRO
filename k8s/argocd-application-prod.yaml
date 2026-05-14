@@ -10,7 +10,9 @@ metadata:
     argocd-image-updater.argoproj.io/currency-service.allow-tags: regexp:^v[0-9]+(\.[0-9]+)*$
     argocd-image-updater.argoproj.io/currency-service.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/currency-service.helm.image-tag: image.tag
-    argocd-image-updater.argoproj.io/write-back-method: argocd
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:values-prod.yaml
+    argocd-image-updater.argoproj.io/git-branch: o.zolotorev/k8s_ci/cd
 spec:
   project: default
 
