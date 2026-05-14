@@ -1,0 +1,31 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: currency-service-stage
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: currency-service=z0leg/currency-service
+    argocd-image-updater.argoproj.io/currency-service.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/currency-service.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/currency-service.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://education-git.yadro.com/education/devops/2026/o.zolotorev/app.git
+    targetRevision: o.zolotorev/k8s_ci/cd
+    path: k8s/currency-service
+    helm:
+      valueFiles:
+        - values-stage.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: currency-service-stage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
