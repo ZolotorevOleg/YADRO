@@ -104,7 +104,7 @@ pipeline {
 
 
         stage('Push to DockerHub') {
-            agent { label 'staging' }
+            agent none
             when {
                 anyOf {
                     branch 'main'
@@ -113,8 +113,20 @@ pipeline {
             }
             steps {
                 script {
-                    def imageTag = env.TAG_NAME ?: "test-${env.BUILD_NUMBER}"
-                    pushImage(env.IMAGE_NAME, imageTag)
+                    def imageTag
+                    def targetEnv
+
+                    if (env.TAG_NAME) {
+                        imageTag = env.TAG_NAME
+                        targetEnv = 'production'
+                    } else {
+                        imageTag = "test-${env.BUILD_NUMBER}"
+                        targetEnv = 'staging'
+                    }
+
+                    node(targetEnv) {
+                        pushImage(env.IMAGE_NAME, imageTag)
+                    }
                 }
             }
         }
