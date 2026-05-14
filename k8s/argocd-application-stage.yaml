@@ -10,6 +10,7 @@ metadata:
     argocd-image-updater.argoproj.io/currency-service.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/currency-service.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:values-stage.yaml
     argocd-image-updater.argoproj.io/git-branch: o.zolotorev/k8s_ci/cd
 spec:
   project: default
