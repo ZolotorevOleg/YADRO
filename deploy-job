@@ -18,8 +18,8 @@ pipeline {
                 echo "Deploying ${params.IMAGE_TAG} to ${params.ENVIRONMENT}"
 
                 export IMAGE_TAG=${params.IMAGE_TAG}
-                docker-compose pull
-                docker-compose up -d
+                docker compose pull
+                docker compose up -d
                 """
             }
         }
