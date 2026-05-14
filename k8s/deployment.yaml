@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: currency-service
-  namespace: currency-service
 spec:
   replicas: 2
   strategy:
@@ -25,7 +24,7 @@ spec:
               app: currency-service
       containers:
       - name: currency-service
-        image: z0leg/currency-service:v1
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: 8000
 

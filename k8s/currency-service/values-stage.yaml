@@ -1,4 +1,6 @@
----
+image:
+  repository: z0leg/currency-service
+  tag: test-24
 service:
   type: NodePort
   nodePort: 30080
