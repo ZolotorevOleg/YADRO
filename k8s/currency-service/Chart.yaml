@@ -1,3 +1,4 @@
+---
 apiVersion: v2
 name: currency-service
 description: Helm chart for currency-service
