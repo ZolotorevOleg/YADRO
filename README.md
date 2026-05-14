@@ -289,7 +289,7 @@ Jenkins используется для CI. Pipeline автоматически 
 DockerHub используется как registry для хранения Docker image.
 
 Используются разные типы тегов:
-- `latest` — staging
+- `test-${env.BUILD_NUMBER}` — staging
 - `v1`, `v1.2`, `v1.2.3` — production
 
 ## ArgoCD
@@ -334,7 +334,7 @@ ArgoCD автоматически:
 Для каждого окружения используется отдельный ArgoCD Application и отдельный values-файл Helm.
 
 Особенности:
-- stage автоматически обновляется при публикации новых latest image
+- stage автоматически обновляется при публикации новых test-${env.BUILD_NUMBER} image
 - production обновляется только для release tags вида `v1`, `v1.2.3`
 - production запущен на порту 80
 - stage через NodePort на 30080
