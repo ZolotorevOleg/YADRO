@@ -1,3 +1,7 @@
 ---
+image:
+  repository: z0leg/currency-service
+  tag: v1
+
 service:
   type: ClusterIP
