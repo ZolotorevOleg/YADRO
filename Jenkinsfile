@@ -91,7 +91,7 @@ pipeline {
                         imageTag = env.TAG_NAME
                         targetEnv = 'production'
                     } else {
-                        imageTag = 'latest'
+                        imageTag = "test-${env.BUILD_NUMBER}"
                         targetEnv = 'staging'
                     }
 
@@ -113,7 +113,7 @@ pipeline {
             }
             steps {
                 script {
-                    def imageTag = env.TAG_NAME ?: 'latest'
+                    def imageTag = env.TAG_NAME ?: "test-${env.BUILD_NUMBER}"
                     pushImage(env.IMAGE_NAME, imageTag)
                 }
             }
@@ -136,7 +136,7 @@ pipeline {
                         imageTag = env.TAG_NAME
                         targetEnv = 'production'
                     } else {
-                        imageTag = 'latest'
+                        imageTag = "test-${env.BUILD_NUMBER}"
                         targetEnv = 'staging'
                     }
 
@@ -196,7 +196,8 @@ pipeline {
                     agent { label 'staging' }
                     steps {
                         script {
-                            scanImage("${env.IMAGE_NAME}:${env.BUILD_NUMBER}", env.TRIVY_IMAGE)
+                            def imageTag = env.TAG_NAME ?: "test-${env.BUILD_NUMBER}"
+                            scanImage("${env.IMAGE_NAME}:${imageTag}", env.TRIVY_IMAGE)
                         }
                     }
                     post {
