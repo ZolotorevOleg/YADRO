@@ -4,5 +4,5 @@ helm:
     value: z0leg/currency-service
     forcestring: true
   - name: image.tag
-    value: test-15
+    value: test-16
     forcestring: true
